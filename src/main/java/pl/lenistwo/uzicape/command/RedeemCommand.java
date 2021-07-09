@@ -24,11 +24,13 @@ public class RedeemCommand extends BukkitCommand {
             return false;
         }
 
+        Player player = (Player) sender;
+
         if (args.length < 1) {
+            player.sendMessage(usageMessage);
             return false;
         }
 
-        Player player = (Player) sender;
         String code = args[0];
 
         String message = sendRequest(code, player.getName());
