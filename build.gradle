@@ -18,12 +18,16 @@ java {
     targetCompatibility = JavaVersion.VERSION_1_8
 }
 
-sourceSets{
-    main{
+sourceSets {
+    main {
         resources {
             srcDirs "src/main/resources"
         }
     }
+}
+
+shadowJar {
+    archiveName 'uzicape-plugin-' + getArchiveVersion().get() + '.jar'
 }
 
 dependencies {
