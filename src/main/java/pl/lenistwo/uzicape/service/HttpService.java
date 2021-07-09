@@ -5,9 +5,9 @@ import lombok.RequiredArgsConstructor;
 import okhttp3.*;
 import pl.lenistwo.uzicape.config.Config;
 import pl.lenistwo.uzicape.request.RedeemRequest;
+import pl.lenistwo.uzicape.response.HttpResponse;
 import pl.lenistwo.uzicape.response.RedeemResponse;
 
-import java.io.IOException;
 import java.util.Objects;
 
 @RequiredArgsConstructor
@@ -28,10 +28,9 @@ public class HttpService {
 
         try (Response response = okHttpClient.newCall(request).execute()) {
             return gson.fromJson(Objects.requireNonNull(response.body()).string(), RedeemResponse.class);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            return new RedeemResponse(false, "API ERROR", config.getApiErrorMessage(), new HttpResponse(400, "Bad Request"));
         }
 
-        return null;
     }
 }

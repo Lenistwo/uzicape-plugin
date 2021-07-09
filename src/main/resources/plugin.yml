@@ -2,7 +2,3 @@ name: UziCapePlugin
 main: pl.lenistwo.uzicape.Plugin
 version: 1.0
 description: UziCape plugin
-commands:
-  cape:
-    description: Wczytaj Kod
-    usage: /cape <KOD>

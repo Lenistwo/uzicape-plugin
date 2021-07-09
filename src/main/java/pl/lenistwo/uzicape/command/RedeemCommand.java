@@ -1,32 +1,30 @@
 package pl.lenistwo.uzicape.command;
 
-import lombok.RequiredArgsConstructor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import pl.lenistwo.uzicape.response.RedeemResponse;
 import pl.lenistwo.uzicape.service.HttpService;
 
-@RequiredArgsConstructor
-public class RedeemCommand implements CommandExecutor {
+import java.util.Collections;
 
-    private final String commandName;
+public class RedeemCommand extends BukkitCommand {
+
     private final HttpService httpService;
 
+    public RedeemCommand(@NotNull String name, String description, String usage, HttpService httpService) {
+        super(name, description, usage, Collections.emptyList());
+        this.httpService = httpService;
+    }
+
     @Override
-    public boolean onCommand(
-            @NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public boolean execute(@NotNull CommandSender sender, @NotNull String commandLabel, @NotNull String[] args) {
         if (!(sender instanceof Player)) {
             return false;
         }
 
-        if (args.length > 1) {
-            return false;
-        }
-
-        if (!command.getName().equalsIgnoreCase(commandName)){
+        if (args.length < 1) {
             return false;
         }
 

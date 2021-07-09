@@ -45,7 +45,9 @@ public class ConfigLoader {
         }
 
         try (OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new FileOutputStream(file))) {
-            Config config = new Config("https://uzicapes.pl/api/plugin/", "81b7d57c-be3e-47c6-9faa-61b267389f9d");
+            Config config = new Config("https://uzicapes.pl/api/plugin/","81b7d57c-be3e-47c6-9faa-61b267389f9d",
+                                       "cape", "check code",
+                                       "/cape <CODE>", "Api Returned An Error");
             outputStreamWriter.write(gson.toJson(config));
             outputStreamWriter.flush();
         } catch (IOException e) {
