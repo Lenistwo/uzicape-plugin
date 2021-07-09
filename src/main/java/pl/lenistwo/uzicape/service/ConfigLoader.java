@@ -18,23 +18,34 @@ public class ConfigLoader {
     private final Gson gson;
     private final String filePath;
 
-    public Config loadConfig() {
+    public Config load() {
         try {
             byte[] fileBytes = Files.readAllBytes(Paths.get(filePath));
             return gson.fromJson(new String(fileBytes), Config.class);
         } catch (IOException e) {
+            createPluginDirectory();
+            createIfNotExist();
             throw new ConfigLoadException(e);
         }
     }
 
-    public void createIfNotExist() {
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    private void createPluginDirectory() {
+        String path = filePath.substring(0, filePath.lastIndexOf("\\"));
+        File file = new File(path);
+        if (!file.exists()) {
+            file.mkdir();
+        }
+    }
+
+    private void createIfNotExist() {
         File file = new File(filePath);
         if (file.exists()) {
             return;
         }
 
         try (OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new FileOutputStream(file))) {
-            Config config = new Config("https://uzicapes.vij.pl/api/plugin/", "/cape", "81b7d57c-be3e-47c6-9faa-61b267389f9d");
+            Config config = new Config("https://uzicapes.pl/api/plugin/", "81b7d57c-be3e-47c6-9faa-61b267389f9d");
             outputStreamWriter.write(gson.toJson(config));
             outputStreamWriter.flush();
         } catch (IOException e) {
