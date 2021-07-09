@@ -5,17 +5,17 @@ import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import pl.lenistwo.uzicape.response.RedeemResponse;
-import pl.lenistwo.uzicape.service.HttpService;
+import pl.lenistwo.uzicape.service.RestService;
 
 import java.util.Collections;
 
 public class RedeemCommand extends BukkitCommand {
 
-    private final HttpService httpService;
+    private final RestService restService;
 
-    public RedeemCommand(@NotNull String name, String description, String usage, HttpService httpService) {
+    public RedeemCommand(@NotNull String name, String description, String usage, RestService restService) {
         super(name, description, usage, Collections.emptyList());
-        this.httpService = httpService;
+        this.restService = restService;
     }
 
     @Override
@@ -41,7 +41,7 @@ public class RedeemCommand extends BukkitCommand {
     }
 
     private String sendRequest(String code, String username) {
-        RedeemResponse redeemResponse = httpService.redeemCode(code, username);
+        RedeemResponse redeemResponse = restService.redeemCode(code, username);
         return redeemResponse.getMinecraft();
     }
 }

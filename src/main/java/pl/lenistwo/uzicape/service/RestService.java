@@ -11,7 +11,7 @@ import pl.lenistwo.uzicape.response.RedeemResponse;
 import java.util.Objects;
 
 @RequiredArgsConstructor
-public class HttpService {
+public class RestService {
 
     private static final String API_KEY_HEADER = "x-api-key";
     private static final String CONTENT_TYPE_VALUE = "application/json";
@@ -22,7 +22,8 @@ public class HttpService {
 
     public RedeemResponse redeemCode(String code, String username) {
         Request.Builder builder = new Request.Builder();
-        String URL = config.getServiceURL() + "/" + code;
+        String slash = "/";
+        String URL = config.getServiceURL().endsWith(slash) ? config.getServiceURL() + code : config.getServiceURL() + slash + code;
         RequestBody requestBody = RequestBody.create(gson.toJson(new RedeemRequest(username)), MediaType.parse(CONTENT_TYPE_VALUE));
         Request request = builder.url(URL).post(requestBody).addHeader(API_KEY_HEADER, config.getApiKey()).build();
 

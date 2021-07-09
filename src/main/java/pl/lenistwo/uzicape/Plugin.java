@@ -7,13 +7,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 import pl.lenistwo.uzicape.command.RedeemCommand;
 import pl.lenistwo.uzicape.config.Config;
 import pl.lenistwo.uzicape.service.ConfigLoader;
-import pl.lenistwo.uzicape.service.HttpService;
+import pl.lenistwo.uzicape.service.RestService;
 
 public class Plugin extends JavaPlugin {
 
     private static final String CONFIG_FILE_NAME = "config.json";
 
-    private HttpService httpService;
+    private RestService restService;
     private Config config;
 
     @Override
@@ -27,11 +27,11 @@ public class Plugin extends JavaPlugin {
         OkHttpClient okHttpClient = new OkHttpClient();
         ConfigLoader configLoader = new ConfigLoader(gson, getDataFolder().getPath() + "\\" + CONFIG_FILE_NAME);
         this.config = configLoader.load();
-        this.httpService = new HttpService(gson, config, okHttpClient);
+        this.restService = new RestService(gson, config, okHttpClient);
     }
 
     private void registerCommands(){
-        RedeemCommand redeemCommand = new RedeemCommand(config.getCommandName(), config.getCommandDescription(), config.getCommandUsage(), httpService);
+        RedeemCommand redeemCommand = new RedeemCommand(config.getCommandName(), config.getCommandDescription(), config.getCommandUsage(), restService);
         this.getServer().getCommandMap().register(config.getCommandName(), redeemCommand);
     }
 }
