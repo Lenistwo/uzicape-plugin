@@ -30,6 +30,7 @@ public class RestService {
         try (Response response = okHttpClient.newCall(request).execute()) {
             return gson.fromJson(Objects.requireNonNull(response.body()).string(), RedeemResponse.class);
         } catch (Exception e) {
+            e.printStackTrace();
             return new RedeemResponse(false, "API ERROR", config.getApiErrorMessage(), new HttpResponse(400, "Bad Request"));
         }
 
