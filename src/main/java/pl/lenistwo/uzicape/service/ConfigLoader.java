@@ -31,7 +31,7 @@ public class ConfigLoader {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     private void createPluginDirectory() {
-        String path = filePath.substring(0, filePath.lastIndexOf("\\"));
+        String path = filePath.substring(0, filePath.lastIndexOf(File.separator));
         File file = new File(path);
         if (!file.exists()) {
             file.mkdir();

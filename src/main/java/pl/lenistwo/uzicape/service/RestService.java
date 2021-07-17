@@ -26,11 +26,12 @@ public class RestService {
         String URL = config.getServiceURL().endsWith(slash) ? config.getServiceURL() + code : config.getServiceURL() + slash + code;
         RequestBody requestBody = RequestBody.create(gson.toJson(new RedeemRequest(username)), MediaType.parse(CONTENT_TYPE_VALUE));
         Request request = builder.url(URL).post(requestBody).addHeader(API_KEY_HEADER, config.getApiKey()).build();
-
+        String body = null;
         try (Response response = okHttpClient.newCall(request).execute()) {
-            return gson.fromJson(Objects.requireNonNull(response.body()).string(), RedeemResponse.class);
+            body = Objects.requireNonNull(response.body()).string();
+            return gson.fromJson(body, RedeemResponse.class);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.printf("Exception %s \nApi Response: %s", e.getMessage(), body);
             return new RedeemResponse(false, "API ERROR", config.getApiErrorMessage(), new HttpResponse(400, "Bad Request"));
         }
 
