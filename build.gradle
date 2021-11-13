@@ -31,15 +31,15 @@ shadowJar {
 }
 
 dependencies {
-    compile 'com.google.code.gson:gson:+'
-    compile 'com.squareup.okhttp3:okhttp:+'
-    compileOnly 'org.projectlombok:lombok:+'
+    compile 'com.google.code.gson:gson:2.8.9'
+    compile 'com.squareup.okhttp3:okhttp:4.9.2'
+    compileOnly 'org.projectlombok:lombok:1.18.22'
     compileOnly 'com.destroystokyo.paper:paper-api:1.16.4-R0.1-SNAPSHOT'
-    testCompileOnly 'org.projectlombok:lombok:+'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:+'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:+'
-    annotationProcessor 'org.projectlombok:lombok:+'
-    testAnnotationProcessor 'org.projectlombok:lombok:+'
+    testCompileOnly 'org.projectlombok:lombok:1.18.22'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
 }
 
 test {

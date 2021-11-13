@@ -4,7 +4,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.defaults.BukkitCommand;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import pl.lenistwo.uzicape.response.RedeemResponse;
+import pl.lenistwo.uzicape.exception.ApiException;
 import pl.lenistwo.uzicape.service.RestService;
 
 import java.util.Collections;
@@ -33,15 +33,18 @@ public class RedeemCommand extends BukkitCommand {
 
         String code = args[0];
 
-        String message = sendRequest(code, player.getName());
+        String message = redeemCode(code, player.getName());
 
         player.sendMessage(message);
 
         return true;
     }
 
-    private String sendRequest(String code, String username) {
-        RedeemResponse redeemResponse = restService.redeemCode(code, username);
-        return redeemResponse.getMinecraft();
+    private String redeemCode(String code, String username) {
+        try {
+            return restService.redeemCode(code, username).getMinecraft();
+        } catch (ApiException e) {
+            return e.getMessage();
+        }
     }
 }

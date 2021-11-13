@@ -2,14 +2,16 @@ package pl.lenistwo.uzicape.service;
 
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import pl.lenistwo.uzicape.config.Config;
-import pl.lenistwo.uzicape.request.RedeemRequest;
-import pl.lenistwo.uzicape.response.HttpResponse;
-import pl.lenistwo.uzicape.response.RedeemResponse;
+import pl.lenistwo.uzicape.dto.request.RedeemRequest;
+import pl.lenistwo.uzicape.dto.response.RedeemResponse;
+import pl.lenistwo.uzicape.exception.ApiException;
 
 import java.util.Objects;
 
+@Slf4j
 @RequiredArgsConstructor
 public class RestService {
 
@@ -20,10 +22,9 @@ public class RestService {
     private final Config config;
     private final OkHttpClient okHttpClient;
 
-    public RedeemResponse redeemCode(String code, String username) {
+    public RedeemResponse redeemCode(String code, String username) throws ApiException {
+        String URL = prepareUrl(code);
         Request.Builder builder = new Request.Builder();
-        String slash = "/";
-        String URL = config.getServiceURL().endsWith(slash) ? config.getServiceURL() + code : config.getServiceURL() + slash + code;
         RequestBody requestBody = RequestBody.create(gson.toJson(new RedeemRequest(username)), MediaType.parse(CONTENT_TYPE_VALUE));
         Request request = builder.url(URL).post(requestBody).addHeader(API_KEY_HEADER, config.getApiKey()).build();
         String body = null;
@@ -31,9 +32,13 @@ public class RestService {
             body = Objects.requireNonNull(response.body()).string();
             return gson.fromJson(body, RedeemResponse.class);
         } catch (Exception e) {
-            System.err.printf("Exception %s \nApi Response: %s", e.getMessage(), body);
-            return new RedeemResponse(false, "API ERROR", config.getApiErrorMessage(), new HttpResponse(400, "Bad Request"));
+            log.error("Exception {} \nApi Response: {}", e.getMessage(), body);
+            throw new ApiException(config.getApiErrorMessage());
         }
 
+    }
+
+    private String prepareUrl(String code) {
+        return config.getServiceURL().endsWith("/") ? config.getServiceURL() + code : config.getServiceURL() + "/" + code;
     }
 }

@@ -1,4 +1,4 @@
-package pl.lenistwo.uzicape.request;
+package pl.lenistwo.uzicape.dto.request;
 
 import lombok.Data;
 
